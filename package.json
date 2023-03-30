@@ -13,7 +13,7 @@
     "moment": "^2.29.4",
     "momentjs": "^2.0.0",
     "morgan": "^1.10.0",
-    "mysql": "^2.18.1",
+    "mysql": "^2.18.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.22",
