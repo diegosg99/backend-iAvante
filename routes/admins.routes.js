@@ -9,7 +9,7 @@ router.post('/admins/register',async (req,res) => {
     
       let sql = `INSERT INTO admins VALUES ('${item.id}','${item.name}','${item.dni}','${item.username}','${item.email}','${item.phone}','${encodedPassword}','${item.photo}')`;
     
-      adminDB.query(sql, function(err, rows, fields) {
+      connection.query(sql, function(err, rows, fields) {
           if (err) throw err;
           res.status(200).send("exito");
       });
@@ -30,7 +30,7 @@ try{
 
     let sql = `SELECT username,password FROM admins WHERE username = '${data.username}'`;
 
-    adminDB.query(sql, function(err, rows, fields) {
+    connection.query(sql, function(err, rows, fields) {
 
     bcrypt.compare(data.password,rows[0].password).then(bool=>{
 
@@ -54,7 +54,7 @@ router.get('/admins/admin/:username', (req,res) => {
     
     let sql = `SELECT * FROM admins WHERE username = '${data}'`;
 
-    adminDB.query(sql, function(err, rows, fields) {
+    connection.query(sql, function(err, rows, fields) {
         res.status(200).send(rows[0]);
         
     })
