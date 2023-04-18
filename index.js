@@ -35,7 +35,6 @@ app.use(morgan('dev'));
             //----------------------BD Alumnos
 const connection = mysql.createConnection({
   host     : '127.0.0.1',
-  port     : '33060',
   user     : 'admin',
   password : 'Kiro&doddy1',
   database : 'iavante'
