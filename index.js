@@ -23,7 +23,7 @@ const corsOptions = {
 
 const app = express();
 
-const router = express.Router();
+//const router = express.Router();
 
 app.set('port', process.env.PORT || PORT);
 
@@ -78,7 +78,92 @@ return result;
 
 //app.use(require('./routes/courses.routes'));
 
-router.get('/courses/name',(req,res) => {
+//app.use(require('./routes/survey.routes'));
+
+//--------------------STUDENTS-----------------------------------------
+
+app.put('/student/update',(req,res) => {
+  try{
+    let data = req.body;
+  
+    let timestamp = moment().unix();
+  
+    let sql = `UPDATE alumnos 
+                  SET dni='${data.dni}',
+                  name='${data.name}',
+                  surname='${data.surname}',
+                  email='${data.email}',
+                  phone='${data.phone}',
+                  details='${data.details}',
+                  rights='${data.rights}',
+                  entry='${moment.unix(timestamp).format("YYYY-MM-DD HH:mm:ss")}'
+                  WHERE dni = '${data.dni}';`;
+  
+    connection.query(sql, function(err, rows, fields) {
+        if (err) throw err;
+        res.status(200).send(data);
+        });
+  }catch(error) {
+    res.status(400).send(req);
+  }
+  })
+
+app.get('/students/course/:id',(req,res) => {
+try{
+  let data = req.params.id;
+  let sql = `SELECT dni,name,surname FROM alumnos WHERE course = '`+data+`';`;
+  connection.query(sql, function(err, rows, fields) {
+      if (err) throw err;
+      res.status(200).send({rows});
+      });
+}catch(error){
+  res.status(400).send({msg:"Error"});
+}
+})
+
+app.get('/students',(req,res) => {
+try{
+  let sql = `SELECT * FROM alumnos;`;
+  connection.query(sql, function(err, rows, fields) {
+      if (err) throw err;
+      res.status(200).send({rows});
+      });
+}catch(error){
+  res.status(400).send({msg:"Error"});
+}
+})
+
+app.get('/student/data/:id',(req,res) => {
+try{
+  let data = req.params.id;
+  let sql = `SELECT * FROM alumnos WHERE dni = '`+data+`';`;
+  connection.query(sql, function(err, rows, fields) {
+      if (err) throw err;
+      res.status(200).send({rows});
+      });
+}catch(error){
+  res.status(400).send({msg:"Error"});
+}
+})
+
+app.post('/students/uploadExcel',(req,res) => {
+  try{
+    let data = req.body;
+  
+    data.forEach(item =>{
+      let sql = `INSERT IGNORE INTO alumnos VALUES ('${item.dni}','${item.name}','${item.surname}','${item.email}',${item.phone},'${item.details}','${item.course}','${item.rights}','${item.entry}','${item.exit}')`;
+  
+    connection.query(sql, function(err, rows, fields) {
+        if (err) throw err;
+        //res.status(200).send("exito");
+        });
+    })
+  }catch(error) {
+    res.status(400).send(req);
+  }
+  })
+//---------------------------------COURSES---------------------------------------
+app.get('/courses/name',(req,res) => {
   try{
       let sql = `SELECT code,name FROM cursos;`;
       connection.query(sql, function(err, rows, fields) {
@@ -90,7 +175,7 @@ router.get('/courses/name',(req,res) => {
   }
 })
 
-router.get('/courses',(req,res) => {
+app.get('/courses',(req,res) => {
   try{
       let sql = `SELECT * FROM cursos;`;
       connection.query(sql, function(err, rows, fields) {
@@ -102,7 +187,7 @@ router.get('/courses',(req,res) => {
   }
   })
 
-router.get('/course/documentation/:courseCode',(req,res) => {
+app.get('/course/documentation/:courseCode',(req,res) => {
 let courseCode = req.params.courseCode;
 try{
     let sql = `SELECT documentationUrl FROM cursos WHERE code = '${courseCode}';`;
@@ -115,7 +200,7 @@ try{
 }
 })
 
-router.get('/course/room/:courseCode',(req,res) => {
+app.get('/course/room/:courseCode',(req,res) => {
 let courseCode = req.params.courseCode;
 try{
     let sql = `SELECT room FROM cursos WHERE code = '${courseCode}';`;
@@ -128,7 +213,7 @@ try{
 }
 })
 
-router.get('/course/:courseCode',(req,res) => {
+app.get('/course/:courseCode',(req,res) => {
 let courseCode = req.params.courseCode;
 try{
     let sql = `SELECT * FROM cursos WHERE code = '${courseCode}';`;
@@ -141,7 +226,7 @@ try{
 }
 })
 
-router.post('/courses/uploadExcel',(req,res) => {
+app.post('/courses/uploadExcel',(req,res) => {
 try{
   let data = req.body;
 
@@ -158,7 +243,20 @@ try{
 }
 })
 
-//app.use(require('./routes/survey.routes'));
+//---------------------------------------SURVEY--------------------------------
+
+app.post('/upload/survey', (req,res) => {
+  let item = req.body;
+  console.log(item);
+  let sumglobal = (item.question1 + item.question2 + item.question3);
+  let global = (sumglobal/3).toFixed(2);
+
+  let sql = `INSERT INTO valoracion VALUES ('${item.id}','${item.course}','${item.student}',${item.question1},${item.question2},${item.question3},'${item.question4}', ${global})`;
+
+  res.status(200).send("exito");
+})
+
+
 
 //-------------------- Start Server ------------------------------------
 app.listen(app.get('port'), () =>
