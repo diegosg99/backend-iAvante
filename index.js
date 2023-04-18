@@ -15,11 +15,11 @@ const formatComplete = 'YYYY-MM-DD HH:mm:ss'
 const PORT = 3003;
 const SECRET = "614f4f4a6568e9ae881c76e8753f65c9";
 
-const corsOptions = {
-  origin: "*", // Reemplaza "*" con el dominio o dominios permitidos en tus aplicaciones cliente
-  methods: "GET, POST, PUT, DELETE", // Métodos HTTP permitidos
-  allowedHeaders: "Content-Type, Authorization", // Encabezados permitidos
-};
+// const corsOptions = {
+//   origin: "*", // Reemplaza "*" con el dominio o dominios permitidos en tus aplicaciones cliente
+//   methods: "GET, POST, PUT, DELETE", // Métodos HTTP permitidos
+//   allowedHeaders: "Content-Type, Authorization", // Encabezados permitidos
+// };
 
 const app = express();
 
@@ -28,13 +28,13 @@ const app = express();
 app.set('port', process.env.PORT || PORT);
 
 app.use(express.json({limit: '500mb'}));
-app.use(cors(corsOptions));
+//app.use(cors(corsOptions));
 app.use(morgan('dev'));
 
 
             //----------------------BD Alumnos
 const connection = mysql.createConnection({
-  host     : 'localhost',
+  host     : '127.0.0.1',
   user     : 'admin',
   password : 'Kiro&doddy1',
   database : 'iavante'
