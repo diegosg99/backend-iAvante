@@ -26,26 +26,26 @@ app.use(morgan('dev'));
             //----------------------BD Alumnos
 const connection = mysql.createConnection({
   host     : 'localhost',
-  user     : 'root',
-  password : '',
-  database : 'asistencia'
-});
-            //----------------------BD Admin
-const adminDB = mysql.createConnection({
-  host     : 'localhost',
-  user     : 'root',
-  password : '',
+  user     : 'admin',
+  password : 'Kiro&doddy1',
   database : 'iavante'
 });
+            //----------------------BD Admin
+// const adminDB = mysql.createConnection({
+//   host     : 'localhost',
+//   user     : 'root',
+//   password : '',
+//   database : 'iavante'
+// });
 
 connection.connect(err => {
   err ?console.error('error connecting: ' + err.stack)
   :console.log('connected as id ' + connection.threadId);
 });
-adminDB.connect(err => {
-  err ?console.error('error connecting: ' + err.stack)
-      :console.log('connected as id ' + connection.threadId);
-});
+// adminDB.connect(err => {
+//   err ?console.error('error connecting: ' + err.stack)
+//       :console.log('connected as id ' + connection.threadId);
+// });
 
 //--------------------------------------- MIDDLEWARES --------------------------------------
 

@@ -6,7 +6,7 @@ const URI = 'localhost';
   const connection = mysql.createConnection({
     host     : URI,
     user     : 'root',
-    password : '',
+    password : 'Kiro&doddy1',
     database : 'iavante'
   });
 
