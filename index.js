@@ -37,7 +37,8 @@ const connection = mysql.createConnection({
   host     : '127.0.0.1',
   user     : 'admin',
   password : 'Kiro&doddy1',
-  database : 'iavante'
+  database : 'iavante',
+  port     : '33060'
 });
             //----------------------BD Admin
 // const adminDB = mysql.createConnection({
